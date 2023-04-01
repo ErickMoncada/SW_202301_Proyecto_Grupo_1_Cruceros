@@ -1,0 +1,8 @@
+node_modules
+build
+package-lock.json
+.env
+test-report.html
+coverage
+yarn*
+.DS_Store

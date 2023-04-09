@@ -1,5 +1,6 @@
 import { IDataAccessObject } from "@dao/IDataAccessObject";
 import { UserDao } from "@dao/models/Users/UserDao";
+import { EUserState, IUser } from "@server/dao/models/Users/IUser";
 import { JWT } from "@server/utils/Jwt";
 import { Security } from "@utils/Security";
 
@@ -46,4 +47,39 @@ export class Users {
       throw new Error("Can´t Validate Credentials");
     }
   }
+
+  //actualizacion de usuario, email, mane, contraseña
+  private async setUpdates(userId, updateCmd: Partial<IUser>) {
+    await this.userDao.update(userId, { ...updateCmd, updatedAt: new Date() });
+    const updatedFoda = await this.userDao.findByID(userId);
+    return updatedFoda;
+  }
+  public setName(userId: string, name: string) {
+    return this.setUpdates(userId, { name: name });
+  }
+  public setPassword(userId: string, password: string) {
+    const pswdExpires= new Date(new Date().getTime()+(3 * 30 * 24 * 60 * 60 * 1000));
+    return this.setUpdates(userId, { password: password,pswdExpires: pswdExpires });
+  }
+
+  public setState(userId: string, state: EUserState) {
+    return this.setUpdates(userId, { state: state });
+  }
+
+  public setRoles(userId: string, roles: string[]) {
+    return this.setUpdates(userId, { roles: roles });
+  }
+
+  public setEmail(userId: string, email: string) {
+    return this.setUpdates(userId, { email: email });
+  }
+
+  public updPassword(userId: string, name: string, password: string, newpassword:string){
+    if(this.loginUser(name,password)){
+      newpassword= Security.encodePassword(newpassword),
+      this.setPassword(userId,newpassword)
+    }
+  }
+
+
 }

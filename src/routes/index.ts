@@ -33,11 +33,11 @@ router.get('/version', (_req, res)=>{
 import securityRoutes from './security/security';
 router.use('/security', validateKeyMiddleWare, securityRoutes);
 
-import empresasRouter from './empresas/empresas';
-router.use('/empresas', validateKeyMiddleWare, validateJwtMiddleWare, empresasRouter);
+import destinosRouter from './destinos/destinos';
+router.use('/destinos', destinosRouter);
+//, validateKeyMiddleWare, validateJwtMiddleWare
 
-import fodaRouter from './foda/foda';
-router.use('/foda', validateKeyMiddleWare, validateJwtMiddleWare, fodaRouter);
- //router.get  router.post router.put router.delete  router.use
+
+
 
 export default router;

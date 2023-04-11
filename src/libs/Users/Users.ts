@@ -22,7 +22,7 @@ export class Users {
       delete rt.password;
       return rt;
     } catch (ex) {
-      console.error('newFoda error:', ex);
+      console.error('newUser error:', ex);
       return null;
     }
   }

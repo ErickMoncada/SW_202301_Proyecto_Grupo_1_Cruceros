@@ -34,8 +34,8 @@ import securityRoutes from './security/security';
 router.use('/security', validateKeyMiddleWare, securityRoutes);
 
 import destinosRouter from './destinos/destinos';
-router.use('/destinos', destinosRouter);
-//, validateKeyMiddleWare, validateJwtMiddleWare
+router.use('/destinos', validateKeyMiddleWare, validateJwtMiddleWare, destinosRouter);
+
 
 
 

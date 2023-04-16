@@ -9,10 +9,9 @@ export class Users {
   constructor(user: IDataAccessObject) {
     this.userDao = user as UserDao;
   }
-  public async newUser(name:string, email: string, password: string) {
+  public async newUser( email: string, password: string) {
     try {
       const newUser = {
-        name,
         email,
         password: Security.encodePassword(password),
         pswdExpires: new Date(new Date().getTime()+(3 * 30 * 24 * 60 * 60 * 1000))
@@ -26,11 +25,11 @@ export class Users {
       return null;
     }
   }
-  public async loginUser(name:string, password:string) {
+  public async loginUser(email:string, password:string) {
     try{
       const dbUser = await this.userDao.findOneByFilter(
-        {name},
-        {projection:{_id:1,name:1, email:1, password:1, state:1, roles:1, pswdExpires:1, avatar:1}}
+        {email},
+        {projection:{_id:1,email:1, password:1, state:1, roles:1, pswdExpires:1, avatar:1}}
       );
       if (Security.verifyPassword(password, dbUser.password)){
         delete dbUser.password;
@@ -54,9 +53,6 @@ export class Users {
     const updatedFoda = await this.userDao.findByID(userId);
     return updatedFoda;
   }
-  public setName(userId: string, name: string) {
-    return this.setUpdates(userId, { name: name });
-  }
   public setPassword(userId: string, password: string) {
     const pswdExpires= new Date(new Date().getTime()+(3 * 30 * 24 * 60 * 60 * 1000));
     return this.setUpdates(userId, { password: password,pswdExpires: pswdExpires });
@@ -74,8 +70,8 @@ export class Users {
     return this.setUpdates(userId, { email: email });
   }
 
-  public updPassword(userId: string, name: string, password: string, newpassword:string){
-    if(this.loginUser(name,password)){
+  public updPassword(userId: string, email: string, password: string, newpassword:string){
+    if(this.loginUser(email,password)){
       newpassword= Security.encodePassword(newpassword),
       this.setPassword(userId,newpassword)
     }

@@ -13,8 +13,8 @@ userDao.init().then(()=>{
 
 router.post('/signin', async (req, res)=> {
   try {
-    const {name,email, password} = req.body;
-    const newUser = await users.newUser(name,email, password);
+    const {email, password} = req.body;
+    const newUser = await users.newUser(email, password);
     return res.status(200).json({msg:`User Created with id ${newUser._id}`});
   } catch (error) {
     console.error("/signin error", error);
@@ -24,8 +24,8 @@ router.post('/signin', async (req, res)=> {
 
 router.post('/signon', async (req, res)=>{
   try {
-    const {name, password} = req.body;
-    const token = await users.loginUser(name, password);
+    const {email, password} = req.body;
+    const token = await users.loginUser(email, password);
     return res.status(200).json({token});
   } catch (error) {
     console.error("/signin error", error);
@@ -33,12 +33,7 @@ router.post('/signon', async (req, res)=>{
   }
 });
 
-router.put('/upd/:userId/nombre', async (req, res)=>{
-  const {userId} = req.params;
-  const {name} = req.body;
-  const updObject = await users.setName(userId, name);
-  return res.status(200).json(updObject);
-});
+
 
 router.put('/upd/:userId/email', async (req, res)=>{
   const {userId} = req.params;
@@ -64,9 +59,9 @@ router.put('/upd/:userId/roles', async (req, res)=>{
 router.put('/upd/:userId/password', async (req, res)=>{
   const {userId} = req.params;
   const {password} = req.body;
-  const {name}= req.body;
+  const {email}= req.body;
   const {newpassword}=req.body;
-  const updObject = await users.updPassword(userId, name, password, newpassword);
+  const updObject = await users.updPassword(userId, email, password, newpassword);
   return res.status(200).json(updObject);
 });
 export default router;

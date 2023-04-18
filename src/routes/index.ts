@@ -19,7 +19,7 @@ import {validateJwtMiddleWare} from './middlewares/jwtTokenValidator';
 
 // http://localhost:3001
 router.get('/', (_req, res) => {
-  res.json({msg:'Hello World!'});
+  res.json({msg:'Destinos Turisticos'});
  });
 
 // http://localhost:3001/version
